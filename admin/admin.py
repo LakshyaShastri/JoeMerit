@@ -21,7 +21,7 @@ while True:
 
             if subchoice == 1:
                 view_tests()
-                
+
             elif subchoice == 2:
                 test_name = input("Enter the test name you want to see the questions of: ")
                 view_questions(test_name)
@@ -41,7 +41,6 @@ while True:
 
             elif subchoice == 6:
                 break
-
 
     elif choice == 3:
         pass
