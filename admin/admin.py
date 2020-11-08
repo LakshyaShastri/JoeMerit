@@ -1,14 +1,17 @@
 import os
-
 import MySQLdb
-
+from MySQLdb._exceptions import ProgrammingError
 from admin.options import *
 from admin.helpers import *
+
+
 
 db = MySQLdb.connect(host = "localhost", user = "root", passwd = os.environ['sqlpwd'])
 cursor = db.cursor()
 
 print("Welcome to the admin panel for JoeMerit\nPlease choose an option:\n")
+
+
 
 def view_questions(test_name):
     # check if test_name exists or not
@@ -20,7 +23,10 @@ def view_questions(test_name):
         print(row)
 
 def add_question(test_name):
-    # check if a db called test_name exists or not
+    # check if a table called test_name exists or not
+    if test_name not in cursor.fetchall():
+        print("{test_name} was not found.")
+        return False    
 
     while True:
 
@@ -64,13 +70,32 @@ def modify_question(test_name, question_number):
     # maybe make a dict of properties you can edit
     pass
 
+
+
+
+
+
+
+
+#making DB and master_table
+try:
+    cursor.execute("CREATE DATABASE ADMIN;")
+    cursor.execute("USE ADMIN;")
+    cursor.execute("CREATE TABLE MASTER (test_name CHAR(20), num_ques DECIMAL(3), subj_ques DECIMAL(3), obj_ques DECIMAL(3), max_marks DECIMAL(3), test_date DATE;")
+except ProgrammingError:
+    pass
+
+
+
+
 while True:
     display_options(main_options)
     choice = get_choice(main_options)
 
     if choice == 1:
-        test_name = input("Enter the name of the test/subject: ")
+        test_name = input("Enter the name of the test: ")
         # add test name to table of tests; create table for the test
+        cursor.execute("INSERT INTO MASTER (test_name) VALUES ({test_name});")
         add_question(test_name)
 
     elif choice == 2:
