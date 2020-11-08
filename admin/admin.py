@@ -10,9 +10,12 @@ cursor = db.cursor()
 
 print("Welcome to the admin panel for JoeMerit\nPlease choose an option:\n")
 
-def view_questions():
-    query = "SELECT * FROM questions"
-    # execute, whatever the db name or format is
+def view_questions(test_name):
+    cursor.execute("USE ADMIN")
+    cursor.execute(f"SELECT * FROM {test_name}")
+    
+    for row in cursor.fetchall():
+        print(row)
 
 def add_questions(test_name):
     while True:
