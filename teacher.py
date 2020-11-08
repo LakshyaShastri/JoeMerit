@@ -1,52 +1,33 @@
+import os
+
+import MySQLdb
+
+from options import *
+from helpers import *
+
+db = MySQLdb.connect(host = "localhost", user = "root", passwd = os.environ['sqlpwd'])
+cursor = db.cursor()
+
 print("Welcome to the admin panel for JoeMerit\nPlease choose an option:\n")
-
-main_options = {
-    1: "Create a test",
-    2: "View/edit a test",
-    3: "Delete a test"
-}
-
-def get_choice():
-    choice = int(input("Please enter your choice: "))
-    print()
-    return choice
 
 def view_questions():
     query = "SELECT * FROM questions"
 
 while True:
-    for opt_num in main_options:
-        print(f"{opt_num}: {main_options[opt_num]}")
-
-    choice = get_choice()
-    if choice not in main_options:
-        print("Invalid choice\n")
-        continue
+    display_options(main_options)
+    choice = get_choice(main_options)
 
     if choice == 1:
-        pass
-
+        subject_name = input("Enter the name of the subject: ")
 
     elif choice == 2:
-        options = {
-            1: "View all questions",
-            2: "Add a question",
-            3: "Remove a question",
-            4: "Modify a question",
-            5: "Go back"
-        }
 
         while True:
-            for opt_num in options:
-                print(f"{opt_num}: {options[opt_num]}")
-            
-            subchoice = get_choice()
-            if subchoice not in options:
-                print("Invalid choice\n")
-                continue
+            display_options(view_options)
+            subchoice = get_choice(view_options)
 
             if subchoice == 1:
-                view_questions()
+                pass
             elif subchoice == 2:
                 pass
             elif subchoice == 3:
