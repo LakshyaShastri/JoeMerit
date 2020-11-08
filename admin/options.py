@@ -10,9 +10,10 @@ create_options = {
 }
 
 view_options = {
-    1: "View all questions",
-    2: "Add questions",
-    3: "Remove a question",
-    4: "Modify a question",
-    5: "Go back"
+    1: "View all tests",
+    2: "View test questions",
+    3: "Add a question",
+    4: "Remove a question",
+    5: "Modify a question",
+    6: "Go back"
 }

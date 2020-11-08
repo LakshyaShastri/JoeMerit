@@ -1,26 +1,49 @@
 import os
 
 import MySQLdb
+from MySQLdb._exceptions import OperationalError
 
-from admin.options import *
-from admin.helpers import *
+from options import *
+from helpers import *
 
 db = MySQLdb.connect(host = "localhost", user = "root", passwd = os.environ['sqlpwd'])
 cursor = db.cursor()
 
 print("Welcome to the admin panel for JoeMerit\nPlease choose an option:\n")
 
-def view_questions(test_name):
-    # check if test_name exists or not
-
-    cursor.execute("USE ADMIN")
-    cursor.execute(f"SELECT * FROM {test_name}")
+def view_tests():
+    try:
+        cursor.execute("USE admin")
+    except OperationalError:
+        print("There are no tests in the database as of now")
     
+    cursor.execute("SHOW TABLES")
+    for test in cursor.fetchall():
+        print(test[0])
+
+def view_questions(test_name):
+    try:
+        cursor.execute("USE admin")
+    except OperationalError:
+        cursor.execute("CREATE DATABASE admin")
+        cursor.execute("USE admin")
+    
+    cursor.execute("SHOW TABLES")
+    if (test_name, ) not in cursor.fetchall():
+        print(f"A test called {test_name} does not exist\n")
+        return False
+
+    cursor.execute(f"SELECT * FROM {test_name}")
     for row in cursor.fetchall():
         print(row)
 
 def add_question(test_name):
-    # check if a db called test_name exists or not
+    cursor.execute("USE admin")
+    cursor.execute("SHOW TABLES")
+
+    if (test_name, ) not in cursor.fetchall():
+        print(f"A test called {test_name} does not exist\n")
+        return False
 
     while True:
 
@@ -52,6 +75,12 @@ def add_question(test_name):
             answer = int(input(f"Which option is the answer to the question? "))
 
             # add question, answer and options to db of test_name
+        
+        # cursor.execute("")
+        
+        choice = input("Do you want to add another question to the same test? (y/n): ")
+        if choice == "n":
+            break
 
 def remove_question(test_name, question_number):
     # check if question number exists in test_name
@@ -79,22 +108,26 @@ while True:
             display_options(view_options)
             subchoice = get_choice(view_options)
 
+
             if subchoice == 1:
-                view_questions()
+                view_tests()
             elif subchoice == 2:
+                test_name = input("Enter the test name you want to see the questions of: ")
+                view_questions(test_name)
+            elif subchoice == 3:
                 test_name = input("Enter the test name you want to add a question to: ")
                 add_question(test_name)
 
-            elif subchoice == 3:
+            elif subchoice == 4:
                 test_name = input("Enter the test name you want to remove a question from")
                 view_questions(test_name)
                 question_number = int(input("Enter the question number you want to remove: "))
                 remove_question(test_name, question_number)
 
-            elif subchoice == 4:
+            elif subchoice == 5:
                 modify_question()
 
-            elif subchoice == 5:
+            elif subchoice == 6:
                 break
 
 
