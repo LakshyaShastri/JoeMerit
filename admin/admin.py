@@ -3,7 +3,7 @@ import MySQLdb
 from MySQLdb._exceptions import ProgrammingError
 from admin.options import *
 from admin.helpers import *
-
+from time import sleep
 
 
 db = MySQLdb.connect(host = "localhost", user = "root", passwd = os.environ['sqlpwd'])
@@ -74,7 +74,7 @@ def modify_question(test_name, question_number):
 
 
 
-
+#INSERT INTO TABLE VALUES (/TES, DFB,S GU)
 
 
 #making DB and master_table
@@ -83,8 +83,10 @@ try:
     cursor.execute("USE ADMIN;")
     cursor.execute("CREATE TABLE MASTER (test_name CHAR(20), num_ques DECIMAL(3), subj_ques DECIMAL(3), obj_ques DECIMAL(3), max_marks DECIMAL(3), test_date DATE;")
 except ProgrammingError:
-    pass
-
+    print("You are already using the ADMIN database. The master table has already been created.")
+    sleep(2)
+    print("Loading options...")
+    sleep(2)
 
 
 
@@ -95,7 +97,7 @@ while True:
     if choice == 1:
         test_name = input("Enter the name of the test: ")
         # add test name to table of tests; create table for the test
-        cursor.execute("INSERT INTO MASTER (test_name) VALUES ({test_name});")
+        
         add_question(test_name)
 
     elif choice == 2:
