@@ -1,9 +1,9 @@
 import os
 import MySQLdb
 from MySQLdb._exceptions import ProgrammingError
-from admin.options import *
-from admin.helpers import *
-from time import sleep
+from options import *
+from helpers import *
+
 
 
 db = MySQLdb.connect(host = "localhost", user = "root", passwd = os.environ['sqlpwd'])
@@ -74,7 +74,7 @@ def modify_question(test_name, question_number):
 
 
 
-#INSERT INTO TABLE VALUES (/TES, DFB,S GU)
+
 
 
 #making DB and master_table
@@ -83,10 +83,8 @@ try:
     cursor.execute("USE ADMIN;")
     cursor.execute("CREATE TABLE MASTER (test_name CHAR(20), num_ques DECIMAL(3), subj_ques DECIMAL(3), obj_ques DECIMAL(3), max_marks DECIMAL(3), test_date DATE;")
 except ProgrammingError:
-    print("You are already using the ADMIN database. The master table has already been created.")
-    sleep(2)
-    print("Loading options...")
-    sleep(2)
+    pass
+
 
 
 
@@ -97,7 +95,7 @@ while True:
     if choice == 1:
         test_name = input("Enter the name of the test: ")
         # add test name to table of tests; create table for the test
-        
+        cursor.execute("INSERT INTO MASTER (test_name) VALUES ({test_name});")
         add_question(test_name)
 
     elif choice == 2:
@@ -107,23 +105,27 @@ while True:
             subchoice = get_choice(view_options)
 
             if subchoice == 1:
-                view_questions()
+                view_tests()
+
             elif subchoice == 2:
+                test_name = input("Enter the test name you want to see the questions of: ")
+                view_questions(test_name)
+
+            elif subchoice == 3:
                 test_name = input("Enter the test name you want to add a question to: ")
                 add_question(test_name)
 
-            elif subchoice == 3:
+            elif subchoice == 4:
                 test_name = input("Enter the test name you want to remove a question from")
                 view_questions(test_name)
                 question_number = int(input("Enter the question number you want to remove: "))
                 remove_question(test_name, question_number)
 
-            elif subchoice == 4:
+            elif subchoice == 5:
                 modify_question()
 
-            elif subchoice == 5:
+            elif subchoice == 6:
                 break
-
 
     elif choice == 3:
         pass
