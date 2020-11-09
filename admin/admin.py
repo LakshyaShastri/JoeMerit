@@ -1,7 +1,6 @@
 import os
 
 import MySQLdb
-from MySQLdb._exceptions import ProgrammingError
 
 from options import *
 from helpers import *
@@ -15,7 +14,7 @@ cursor.execute("SHOW DATABASES")
 if ('admin', ) not in cursor.fetchall():
     cursor.execute("CREATE DATABASE ADMIN;")
 
-cursor.execute("USE ADMIN;")
+cursor.execute("USE ADMIN")
 
 cursor.execute("SHOW TABLES")
 if ('MASTER', ) not in cursor.fetchall():
