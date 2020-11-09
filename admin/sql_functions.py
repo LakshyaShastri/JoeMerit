@@ -93,8 +93,6 @@ def add_questions(test_name):
         ques_data["type"] = q_type
         ques_data["question"] = question
 
-
-
         if q_type == 'subj':
             weightage = int(input("Enter the marks the question should carry: "))
             word_limit = int(input("Enter an optional word limit for the question (leave blank for no word limit): "))
@@ -107,11 +105,7 @@ def add_questions(test_name):
             
             # add question, weightage and word limit (if any) to the db of test_name
             cursor.execute(f"INSERT INTO {test_name} VALUES ({question},{weightage},{word_limit}")
-            
             # add NULL if no word limit
-            if word_limit == 0:
-                word_limit = "Null"
-
 
         else:
             options = {}

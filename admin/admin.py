@@ -7,12 +7,10 @@ from options import *
 from helpers import *
 from sql_functions import *
 
-#establishing connection
 db = MySQLdb.connect(host = "localhost", user = "root", passwd = os.environ['sqlpwd'])
 cursor = db.cursor()
 
 
-#ensuring correct database use---created master_table
 cursor.execute("SHOW DATABASES")
 if ('admin', ) not in cursor.fetchall():
     cursor.execute("CREATE DATABASE ADMIN;")
@@ -24,16 +22,10 @@ if ('MASTER', ) not in cursor.fetchall():
     cursor.execute("CREATE TABLE master (test_name VARCHAR(20), subj_ques DECIMAL(2,0), obj_ques DECIMAL(2,0), num_ques DECIMAL(2,0), max_marks DECIMAL(3,1), created_at TIMESTAMP;")
 
 
-
-
-
 print("Welcome to the admin panel for JoeMerit\nPlease choose an option:\n")
 while True:
     display_options(main_options)
     choice = get_choice(main_options)
-
-
-
 
     if choice == 1:
         test_name = input("Enter the name of the test: ")
@@ -49,14 +41,9 @@ while True:
 
         cursor.execute(f"INSERT INTO master VALUES ({test_name}, {data['subj_ques_num']}, {data['obj_ques_num']}, {data['subj_ques_num'] + data['obj_ques_num']}, {datetime.now().timestamp()})")
         db.commit()
-        
-        # create table for the test, format to be decided
+
         cursor.execute(f"CREATE TABLE {test_name} (type VARCHAR(4), question VARCHAR(120), weightage DECIMAL(1,1), word_limit VARCHAR(25), options VARCHAR(200), answer DECIMAL(1);")
         #cursor.execute(f'INSERT INTO {test_name} VALUES ({add_questions(test_name)[0]["type"]},{add_questions(test_name)[0]["question"]},{add_questions(test_name)[0]["weightage"]},{add_questions(test_name)[0]["word_limit"]},{add_questions(test_name)[0]["options"]},{add_questions(test_name)[0]["answer"]}')
-
-
-
-
 
     elif choice == 2:
 
