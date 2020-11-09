@@ -37,7 +37,7 @@ while True:
             print(f"A test named {test_name} already exists")
             continue
 
-        data = interpret_output(add_question(test_name))
+        data = interpret_output(add_questions(test_name))
 
         cursor.execute(f"INSERT INTO master VALUES ({test_name}, {data['subj_ques_num']}, {data['obj_ques_num']}, {data['subj_ques_num'] + data['obj_ques_num']}, {datetime.now().timestamp()})")
         db.commit()
@@ -59,7 +59,7 @@ while True:
 
             elif subchoice == 3:
                 test_name = input("Enter the test name you want to add a question to: ")
-                add_question(test_name)
+                add_questions(test_name)
 
             elif subchoice == 4:
                 test_name = input("Enter the test name you want to remove a question from")

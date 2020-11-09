@@ -53,7 +53,7 @@ def view_questions(test_name):
     #     Answer:
 
 
-def add_question(test_name):
+def add_questions(test_name):
     """
     output_structure = [
         {
