@@ -52,7 +52,7 @@ while True:
         
         # create table for the test, format to be decided
         cursor.execute(f"CREATE TABLE {test_name} (type VARCHAR(4), question VARCHAR(120), weightage DECIMAL(1,1), word_limit VARCHAR(25), options VARCHAR(200), answer DECIMAL(1);")
-        cursor.execute(f'INSERT INTO {test_name} VALUES ({add_questions(test_name)[0]["type"]},{add_questions(test_name)[0]["question"]},{add_questions(test_name)[0]["weightage"]},{add_questions(test_name)[0]["word_limit"]},{add_questions(test_name)[0]["options"]},{add_questions(test_name)[0]["answer"]}')
+        #cursor.execute(f'INSERT INTO {test_name} VALUES ({add_questions(test_name)[0]["type"]},{add_questions(test_name)[0]["question"]},{add_questions(test_name)[0]["weightage"]},{add_questions(test_name)[0]["word_limit"]},{add_questions(test_name)[0]["options"]},{add_questions(test_name)[0]["answer"]}')
 
 
 
