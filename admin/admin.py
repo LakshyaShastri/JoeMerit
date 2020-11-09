@@ -1,6 +1,8 @@
 from options import *
 from helpers import *
 from sql_functions import *
+
+import os
 from MySQLdb._exceptions import ProgrammingError
 import MySQLdb
 
@@ -10,7 +12,7 @@ print("Welcome to the admin panel for JoeMerit\nPlease choose an option:\n")
 db = MySQLdb.connect(host = "localhost", user = "root", passwd = os.environ['sqlpwd'])
 cursor = db.cursor()
 
-#making DB and master_table
+# making DB and master_table
 try:
     cursor.execute("CREATE DATABASE ADMIN;")
     cursor.execute("USE ADMIN;")
