@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 import MySQLdb
 
@@ -14,11 +15,11 @@ cursor.execute("SHOW DATABASES")
 if ('admin', ) not in cursor.fetchall():
     cursor.execute("CREATE DATABASE ADMIN;")
 
-cursor.execute("USE ADMIN")
+cursor.execute("USE admin")
 
 cursor.execute("SHOW TABLES")
 if ('MASTER', ) not in cursor.fetchall():
-    cursor.execute("CREATE TABLE MASTER (test_name VARCHAR(20), num_ques DECIMAL(2), subj_ques DECIMAL(2), obj_ques DECIMAL(2), max_marks DECIMAL(3), created_at TIMESTAMP;")
+    cursor.execute("CREATE TABLE master (test_name VARCHAR(20), subj_ques DECIMAL(2), obj_ques DECIMAL(2), num_ques DECIMAL(2), max_marks DECIMAL(3), last_edited TIMESTAMP;")
 
 
 print("Welcome to the admin panel for JoeMerit\nPlease choose an option:\n")
@@ -28,8 +29,20 @@ while True:
 
     if choice == 1:
         test_name = input("Enter the name of the test/subject: ")
-        # add test name to table of tests; create table for the test
-        add_question(test_name)
+
+        cursor.execute("USE admin")
+        cursor.execute("SHOW TABLES")
+
+        if (test_name, ) in cursor.fetchall():
+            print(f"A test named {test_name} already exists")
+            continue
+
+        data = interpret_output(add_question(test_name))
+
+        cursor.execute(f"INSERT INTO master VALUES ({test_name}, {data['subj_ques_num']}, {data['obj_ques_num']}, {data['subj_ques_num'] + data['obj_ques_num']}, {datetime.now().timestamp()})")
+        db.commit()
+        
+        # create table for the test, format to be decided
 
     elif choice == 2:
 

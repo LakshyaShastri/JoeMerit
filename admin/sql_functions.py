@@ -59,12 +59,12 @@ def add_question(test_name):
         {
             "type": str,
             "question": str,
-            "weightage": str,
+            "weightage": Optional[int],
             "word_limit": str,
             "options": [
                 str, str, str, str
             ],
-            "answer": int
+            "answer": str,
         }
     ]
     """
@@ -90,6 +90,7 @@ def add_question(test_name):
         question = input("Enter the question: ")
         
         ques_data = {}
+        ques_data["type"] = q_type
         ques_data["question"] = question
 
         if q_type == 'subj':
