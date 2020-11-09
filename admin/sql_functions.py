@@ -54,6 +54,23 @@ def view_questions(test_name):
 
 
 def add_question(test_name):
+    """
+    output_structure = [
+        {
+            "type": str,
+            "question": str,
+            "weightage": str,
+            "word_limit": str,
+            "options": [
+                str, str, str, str
+            ],
+            "answer": int
+        }
+    ]
+    """
+
+    output = []
+
     cursor.execute("USE admin")
     cursor.execute("SHOW TABLES")
 
@@ -71,6 +88,9 @@ def add_question(test_name):
             break
         
         question = input("Enter the question: ")
+        
+        ques_data = {}
+        ques_data["question"] = question
 
         if q_type == 'subj':
             weightage = int(input("Enter the marks the question should carry: "))
@@ -78,6 +98,9 @@ def add_question(test_name):
 
             if word_limit in {"", " "}:
                 word_limit = None
+            
+            ques_data["weightage"] = weightage
+            ques_data["word_limit"] = word_limit
             
             # add question, weightage and word limit (if any) to the db of test_name
             # add NULL if no word limit
@@ -90,13 +113,19 @@ def add_question(test_name):
             display_options(options)
             answer = int(input(f"Which option is the answer to the question? "))
 
+            ques_data["options"] = list(options.values())
+            ques_data["answer"] = answer
+
             # add question, answer and options to db of test_name
         
         # cursor.execute("")
+        output.append(ques_data)
         
         choice = input("Do you want to add another question to the same test? (y/n): ")
         if choice == "n":
             break
+
+    return output
 
 def remove_question(test_name, question_number):
     # check if question number exists in test_name
