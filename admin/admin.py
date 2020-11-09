@@ -18,7 +18,7 @@ cursor.execute("USE ADMIN")
 
 cursor.execute("SHOW TABLES")
 if ('MASTER', ) not in cursor.fetchall():
-    cursor.execute("CREATE TABLE MASTER (test_name VARCHAR(20), num_ques DECIMAL(3), subj_ques DECIMAL(3), obj_ques DECIMAL(3), max_marks DECIMAL(3), created_at DATE;")
+    cursor.execute("CREATE TABLE MASTER (test_name VARCHAR(20), num_ques DECIMAL(2), subj_ques DECIMAL(2), obj_ques DECIMAL(2), max_marks DECIMAL(3), created_at TIMESTAMP;")
 
 
 print("Welcome to the admin panel for JoeMerit\nPlease choose an option:\n")
