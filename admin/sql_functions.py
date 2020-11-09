@@ -54,7 +54,7 @@ def view_questions(test_name):
 
 
 def add_questions(test_name):
-    """
+    '''
     output_structure = [
         {
             "type": str,
@@ -64,10 +64,10 @@ def add_questions(test_name):
             "options": [
                 str, str, str, str
             ],
-            "answer": str,
+            "answer": int,
         }
     ]
-    """
+    '''
 
     output = []
 
