@@ -36,14 +36,14 @@ while True:
         if (test_name, ) in cursor.fetchall():
             print(f"A test named {test_name} already exists")
             continue
+        
+        cursor.execute(f"CREATE TABLE {test_name} (type VARCHAR(4), question VARCHAR(120), weightage DECIMAL(1), word_limit DECIMAL(3), options VARCHAR(300), answer DECIMAL(1);")
+        db.commit()
 
         data = interpret_output(add_questions(test_name))
 
         cursor.execute(f"INSERT INTO master VALUES ({test_name}, {data['subj_ques_num']}, {data['obj_ques_num']}, {data['subj_ques_num'] + data['obj_ques_num']}, {datetime.now().timestamp()})")
         db.commit()
-
-        cursor.execute(f"CREATE TABLE {test_name} (type VARCHAR(4), question VARCHAR(120), weightage DECIMAL(1,1), word_limit VARCHAR(25), options VARCHAR(200), answer DECIMAL(1);")
-        #cursor.execute(f'INSERT INTO {test_name} VALUES ({add_questions(test_name)[0]["type"]},{add_questions(test_name)[0]["question"]},{add_questions(test_name)[0]["weightage"]},{add_questions(test_name)[0]["word_limit"]},{add_questions(test_name)[0]["options"]},{add_questions(test_name)[0]["answer"]}')
 
     elif choice == 2:
 
