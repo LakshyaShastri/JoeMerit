@@ -1,8 +1,23 @@
 from options import *
 from helpers import *
 from sql_functions import *
+from MySQLdb._exceptions import ProgrammingError
+import MySQLdb
+
 
 print("Welcome to the admin panel for JoeMerit\nPlease choose an option:\n")
+
+db = MySQLdb.connect(host = "localhost", user = "root", passwd = os.environ['sqlpwd'])
+cursor = db.cursor()
+
+#making DB and master_table
+try:
+    cursor.execute("CREATE DATABASE ADMIN;")
+    cursor.execute("USE ADMIN;")
+    cursor.execute("CREATE TABLE MASTER (test_name CHAR(20), num_ques DECIMAL(3), subj_ques DECIMAL(3), obj_ques DECIMAL(3), max_marks DECIMAL(3), test_date DATE;")
+except ProgrammingError:
+    print("Note: \n ADMIN database and Master table have already been created and are in use.")
+
 
 while True:
     display_options(main_options)
