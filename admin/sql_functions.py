@@ -24,11 +24,7 @@ def view_tests():
         print("There are no tests in the database right now")
 
 def view_questions(test_name):
-    try:
-        cursor.execute("USE admin")
-    except OperationalError:
-        cursor.execute("CREATE DATABASE admin")
-        cursor.execute("USE admin")
+    cursor.execute("USE admin")
     
     cursor.execute("SHOW TABLES")
     if (test_name, ) not in cursor.fetchall():
@@ -54,7 +50,7 @@ def view_questions(test_name):
 
 
 def add_questions(test_name):
-    '''
+    """
     output_structure = [
         {
             "type": str,
@@ -67,7 +63,7 @@ def add_questions(test_name):
             "answer": int,
         }
     ]
-    '''
+    """
 
     output = []
 
@@ -114,8 +110,12 @@ def add_questions(test_name):
             ques_data["options"] = list(options.values())
             ques_data["answer"] = answer
 
+        cursor.execute(f"SELECT MAX(q_no) from {test_name}")
+        latest_q_no = cursor.fetchall()[0][0]
+
         # clean this up, add using lists or something idk
-        cursor.execute(f'INSERT INTO {test_name} VALUES ({q_type}, {question}, {ques_data.get("weightage", 1)}, {ques_data.get("word_limit", "NULL")}, {" | ".join(ques_data.get("options")) if ques_data.get("options") is not None else "NULL"}, {ques_data.get("answer") if ques_data.get("answer") is not None else "NULL"})')
+        cursor.execute(f'INSERT INTO {test_name} VALUES ({latest_q_no + 1 if latest_q_no is not None else 1}, {q_type}, {question}, {ques_data.get("weightage", 1)}, {ques_data.get("word_limit", "NULL")}, {" | ".join(ques_data.get("options")) if ques_data.get("options") is not None else "NULL"}, {ques_data.get("answer") if ques_data.get("answer") is not None else "NULL"})')
+        db.commit()
 
         output.append(ques_data)
         
@@ -126,9 +126,11 @@ def add_questions(test_name):
     return output
 
 def remove_question(test_name, question_number):
-    # check if question number exists in test_name
     # test name will always be valid since its already verified by view_questions
-    pass
+    if cursor.execute(f"DELTE FROM {test_name} WHERE q_no={question_number}") == 0:
+        print("Invalid question number")
+        return False
+    db.commit()
 
 # how do this one
 def modify_question(test_name, question_number):
