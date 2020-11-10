@@ -135,3 +135,15 @@ def modify_question(test_name, question_number):
     # will have to take a test property, then check if that property exists
     # maybe make a dict of properties you can edit
     pass
+
+def delete_test(test_name):
+    while True:
+        del_input = input((f"Are you sure you want to delete test {test_name} permanently? (yes/no)"))
+        if del_input.lower() == "yes":
+            cursor.execute(f"DROP TABLE {test_name};")
+            print(f"Table {test_name} has been successfully deleted.")
+        elif del_input.lower() == "no":
+            break
+        else:
+            print("Invalid input. Please enter yes/no next time.")
+            

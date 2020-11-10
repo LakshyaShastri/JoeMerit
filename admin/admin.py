@@ -75,4 +75,14 @@ while True:
                 break
 
     elif choice == 3:
-        pass
+        while True:
+            
+            table_input = input("Enter the test name which has to be deleted: ")
+
+            if table_input not in cursor.execute("SHOW TABLES"):
+                print("Invalid input. The given table does not exist.")
+
+            else:
+                delete_test(table_input)
+                break
+                
