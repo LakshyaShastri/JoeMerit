@@ -18,10 +18,11 @@ def view_tests():
     for test in cursor.fetchall():
         tests.append(str(test[0]))
 
-    if tests[1:]:
+    tests.pop(0) # popping the master table
+    if tests:
         print(f"{len(tests)} test(s) were found:\n\n {' | '.join(tests)}")
     else:
-        print("There are no tests in the database right now")
+        print("There are no tests in the database right now\n")
 
 def view_questions(test_name):
     cursor.execute("USE admin")
@@ -31,10 +32,31 @@ def view_questions(test_name):
         print(f"A test called {test_name} does not exist\n")
         return False
 
-    cursor.execute(f"SELECT * FROM {test_name}") # needs to be changed to show just questions
-    for row in cursor.fetchall():
-        print(row) # same as above, display as:
-    
+    cursor.execute(f"SELECT * FROM {test_name}")
+    questions = cursor.fetchall()
+
+    for question in questions:
+
+        ques_print = f"""
+            {question[0]}) {question[2]}
+
+            Question weightage: {question[3]}\n
+        """
+
+        if question[1] == "subj":
+            ques_print += f"Question word limit: {question[4] if question[4] is not None else 'No word limit specified'}"
+
+        else:
+            ques_print+="\n"
+            options = question[5].split(" | ")
+
+            for index, option in enumerate(options, start=1):
+                ques_print += f"{index}) {option}\n"
+
+            ques_print += f"Answer: {question[6]}"
+
+        print(ques_print)
+
     # subject to change, display everything neatly in command line
 
     # if subj:
@@ -91,10 +113,12 @@ def add_questions(test_name):
 
         if q_type == 'subj':
             weightage = int(input("Enter the marks the question should carry: "))
-            word_limit = int(input("Enter an optional word limit for the question (leave blank for no word limit): "))
+            word_limit = input("Enter an optional word limit for the question (leave blank for no word limit): ")
 
             if word_limit in {"", " "}:
                 word_limit = None
+            else:
+                word_limit = int(word_limit)
             
             ques_data["weightage"] = weightage
             ques_data["word_limit"] = word_limit
@@ -127,7 +151,7 @@ def add_questions(test_name):
 
 def remove_question(test_name, question_number):
     # test name will always be valid since its already verified by view_questions
-    if cursor.execute(f"DELTE FROM {test_name} WHERE q_no={question_number}") == 0:
+    if cursor.execute(f"DELETE FROM {test_name} WHERE q_no={question_number}") == 0:
         print("Invalid question number")
         return False
     db.commit()
@@ -139,11 +163,12 @@ def modify_question(test_name, question_number):
     pass
 
 def delete_test(test_name):
-    del_confirm = input(f"Are you sure you want to delete test {test_name} permanently? (y/n)")
+    del_confirm = input(f"Are you sure you want to delete test {test_name} permanently? (y/n): ")
     
     if del_confirm.lower() == "n":
         return False
 
+    cursor.execute("USE admin")
     cursor.execute(f"DROP TABLE {test_name}")
     cursor.execute(f"DELETE FROM master WHERE test_name={test_name}")
     db.commit()
