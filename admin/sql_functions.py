@@ -4,7 +4,7 @@ import MySQLdb
 from MySQLdb._exceptions import OperationalError
 
 from helpers import *
-from options import test_table
+from options import test_table_properties
 
 db = MySQLdb.connect(host = "localhost", user = "root", passwd = os.environ['sqlpwd'])
 cursor = db.cursor()
@@ -161,22 +161,12 @@ def remove_question(test_name, question_number):
 
 
 
-###########-----Should we make this with properties common in both subj and obj questions?------##################
+
 def modify_question(test_name, question_number):
 
- ########---prev-comments---########
-    # will have to take a test property, then check if that property exists
-    # maybe make a dict of properties you can edit
-    test_name = input("Enter the test name who's question is to be edited: ")
 
- #######---after-commit---###########  
-    #now display that particular test_table
-    question_number = int(input("Enter the question number corresponding to the question which needs to be edited: "))
-    cursor.execute(f"USE {test_name}")
-
-    #print the dict "test_table" in options.py?
-    print("Please choose an operation: ")
-    operation = get_choice(test_table)
+    display_options(test_table_properties)
+    operation = get_choice(test_table_properties)
 
 
     if operation == 1:
@@ -187,7 +177,7 @@ def modify_question(test_name, question_number):
 
 
     elif operation == 2:
-        new_weig = int(input("Enter new weightage: "))
+        new_weig = input("Enter new weightage: ")
         cursor.execute(f"UPDATE {test_name} SET weightage = {new_weig} WHERE q_no = {question_number}")
         db.commit()
 

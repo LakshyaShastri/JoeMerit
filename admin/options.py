@@ -18,7 +18,7 @@ view_options = {
     6: "Go back"
 }
 
-test_table = {
+test_table_properties = {
         
         1:"question",
         2: "weightage",
