@@ -76,4 +76,12 @@ while True:
                 break
 
     elif choice == 3:
-        pass
+            
+        test_name = input("Enter the test name which you want to delete: ")
+
+        cursor.execute("SHOW TABLES")
+        if (test_name, ) not in cursor.fetchall():
+            print(f"A test called {test_name} does not exist")
+            
+        else:
+            delete_test(test_name)

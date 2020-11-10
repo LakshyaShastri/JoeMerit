@@ -137,3 +137,16 @@ def modify_question(test_name, question_number):
     # will have to take a test property, then check if that property exists
     # maybe make a dict of properties you can edit
     pass
+
+def delete_test(test_name):
+    del_confirm = input(f"Are you sure you want to delete test {test_name} permanently? (y/n)")
+    
+    if del_confirm.lower() == "y":
+        cursor.execute(f"DROP TABLE {test_name}")
+        cursor.execute(f"DELETE FROM master WHERE test_name={test_name}")
+        db.commit()
+
+        print(f"Table {test_name} has been successfully deleted.")
+
+    else:
+        return
