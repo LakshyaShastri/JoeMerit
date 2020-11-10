@@ -13,16 +13,18 @@ cursor = db.cursor()
 
 cursor.execute("SHOW DATABASES")
 if ('admin', ) not in cursor.fetchall():
-    cursor.execute("CREATE DATABASE ADMIN;")
+    cursor.execute("CREATE DATABASE admin")
+    db.commit()
 
 cursor.execute("USE admin")
 
 cursor.execute("SHOW TABLES")
-if ('MASTER', ) not in cursor.fetchall():
-    cursor.execute("CREATE TABLE master (test_name VARCHAR(20), subj_ques DECIMAL(2,0), obj_ques DECIMAL(2,0), num_ques DECIMAL(2,0), max_marks DECIMAL(3,1), created_at TIMESTAMP;")
+if ('master', ) not in cursor.fetchall():
+    cursor.execute("CREATE TABLE master (test_name VARCHAR(20), subj_ques DECIMAL(2,0), obj_ques DECIMAL(2,0), num_ques DECIMAL(2,0), max_marks DECIMAL(3,1), created_at TIMESTAMP)")
+    db.commit()
 
 
-print("Welcome to the admin panel for JoeMerit\nPlease choose an option:\n")
+print("\nWelcome to the admin panel for JoeMerit\nPlease choose an option:\n")
 while True:
     display_options(main_options)
     choice = get_choice(main_options)
@@ -38,8 +40,7 @@ while True:
             print(f"A test named {test_name} already exists")
             continue
         
-        cursor.execute(f"CREATE TABLE {test_name} (q_no DECIMAL(2), type VARCHAR(4), question VARCHAR(120), weightage DECIMAL(1), word_limit DECIMAL(3), options VARCHAR(300), answer DECIMAL(1);")
-        db.commit()
+        cursor.execute(f"CREATE TABLE {test_name} (q_no DECIMAL(2), type VARCHAR(4), question VARCHAR(120), weightage DECIMAL(1), word_limit DECIMAL(3), options VARCHAR(300), answer DECIMAL(1))")
 
         data = interpret_output(add_questions(test_name))
 
