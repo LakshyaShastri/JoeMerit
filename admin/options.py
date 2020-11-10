@@ -17,3 +17,15 @@ view_options = {
     5: "Modify a question",
     6: "Go back"
 }
+
+test_table = {
+        
+        1:"question",
+        2: "weightage",
+        3: "word_limit",
+        4: "options"[
+            str, str, str, str
+            ],
+
+        5: "answer"
+        }

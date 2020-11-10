@@ -4,6 +4,7 @@ import MySQLdb
 from MySQLdb._exceptions import OperationalError
 
 from helpers import *
+from options import test_table
 
 db = MySQLdb.connect(host = "localhost", user = "root", passwd = os.environ['sqlpwd'])
 cursor = db.cursor()
@@ -156,11 +157,44 @@ def remove_question(test_name, question_number):
         return False
     db.commit()
 
-# how do this one
+
+
+
+
+###########-----Should we make this with properties common in both subj and obj questions?------##################
 def modify_question(test_name, question_number):
+
+ ########---prev-comments---########
     # will have to take a test property, then check if that property exists
     # maybe make a dict of properties you can edit
-    pass
+    test_name = input("Enter the test name who's question is to be edited: ")
+
+ #######---after-commit---###########  
+    #now display that particular test_table
+    question_number = int(input("Enter the question number corresponding to the question which needs to be edited: "))
+    cursor.execute(f"USE {test_name}")
+
+    #print the dict "test_table" in options.py?
+    print("Please choose an operation: ")
+    operation = get_choice(test_table)
+
+
+    if operation == 1:
+        new_ques = input("Enter new question: ")
+        cursor.execute(f"UPDATE {test_name} SET question = '{new_ques}' WHERE q_no = {question_number}")
+        db.commit()
+        print("The mentioned change has been made.")
+
+
+    elif operation == 2:
+        new_weig = int(input("Enter new weightage: "))
+        cursor.execute(f"UPDATE {test_name} SET weightage = {new_weig} WHERE q_no = {question_number}")
+        db.commit()
+
+
+
+
+
 
 def delete_test(test_name):
     del_confirm = input(f"Are you sure you want to delete test {test_name} permanently? (y/n): ")
