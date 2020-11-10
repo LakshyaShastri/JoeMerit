@@ -10,18 +10,18 @@ cursor = db.cursor()
 
 
 def view_tests():
-    try:
-        cursor.execute("USE admin")
-    except OperationalError:
-        print("There are no tests in the database as of now")
+    cursor.execute("USE admin")
     
     tests = []
 
     cursor.execute("SHOW TABLES")
     for test in cursor.fetchall():
         tests.append(str(test[0]))
-    
-    print(f"{len(tests)} test(s) were found:\n\n {' | '.join(tests)}")
+
+    if tests[1:]:
+        print(f"{len(tests)} test(s) were found:\n\n {' | '.join(tests)}")
+    else:
+        print("There are no tests in the database right now")
 
 def view_questions(test_name):
     try:
