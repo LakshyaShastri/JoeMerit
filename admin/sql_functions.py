@@ -137,13 +137,14 @@ def modify_question(test_name, question_number):
     pass
 
 def delete_test(test_name):
-    while True:
-        del_input = input((f"Are you sure you want to delete test {test_name} permanently? (yes/no)"))
-        if del_input.lower() == "yes":
-            cursor.execute(f"DROP TABLE {test_name};")
-            print(f"Table {test_name} has been successfully deleted.")
-        elif del_input.lower() == "no":
-            break
-        else:
-            print("Invalid input. Please enter yes/no next time.")
-            
+    del_confirm = input(f"Are you sure you want to delete test {test_name} permanently? (y/n)")
+    
+    if del_confirm.lower() == "y":
+        cursor.execute(f"DROP TABLE {test_name}")
+        cursor.execute(f"DELETE FROM master WHERE test_name={test_name}")
+        db.commit()
+
+        print(f"Table {test_name} has been successfully deleted.")
+
+    else:
+        return
