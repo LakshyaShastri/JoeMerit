@@ -141,12 +141,11 @@ def modify_question(test_name, question_number):
 def delete_test(test_name):
     del_confirm = input(f"Are you sure you want to delete test {test_name} permanently? (y/n)")
     
-    if del_confirm.lower() == "y":
-        cursor.execute(f"DROP TABLE {test_name}")
-        cursor.execute(f"DELETE FROM master WHERE test_name={test_name}")
-        db.commit()
+    if del_confirm.lower() == "n":
+        return False
 
-        print(f"Table {test_name} has been successfully deleted.")
+    cursor.execute(f"DROP TABLE {test_name}")
+    cursor.execute(f"DELETE FROM master WHERE test_name={test_name}")
+    db.commit()
 
-    else:
-        return
+    print(f"Table {test_name} has been successfully deleted.")
