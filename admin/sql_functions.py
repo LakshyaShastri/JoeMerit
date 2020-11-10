@@ -119,6 +119,7 @@ def add_questions(test_name):
 
         # clean this up, add using lists or something idk
         cursor.execute(f'INSERT INTO {test_name} VALUES ({latest_q_no + 1 if latest_q_no is not None else 1}, {q_type}, {question}, {ques_data.get("weightage", 1)}, {ques_data.get("word_limit", "NULL")}, {" | ".join(ques_data.get("options")) if ques_data.get("options") is not None else "NULL"}, {ques_data.get("answer") if ques_data.get("answer") is not None else "NULL"})')
+        db.commit()
 
         output.append(ques_data)
         
@@ -131,7 +132,10 @@ def add_questions(test_name):
 def remove_question(test_name, question_number):
     # check if question number exists in test_name
     # test name will always be valid since its already verified by view_questions
-    pass
+    if cursor.execute(f"DELTE FROM {test_name} WHERE q_no={question_number}") == 0:
+        print("Invalid question number")
+        return False
+    db.commit()
 
 # how do this one
 def modify_question(test_name, question_number):

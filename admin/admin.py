@@ -29,6 +29,7 @@ while True:
 
     if choice == 1:
         test_name = input("Enter the name of the test: ")
+        test_name.replace(" ", "_")
 
         cursor.execute("USE admin")
         cursor.execute("SHOW TABLES")
