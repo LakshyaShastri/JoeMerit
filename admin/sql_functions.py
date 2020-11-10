@@ -164,22 +164,73 @@ def remove_question(test_name, question_number):
 
 def modify_question(test_name, question_number):
 
+    while True:
 
-    display_options(test_table_properties)
-    operation = get_choice(test_table_properties)
+        display_options(test_table_properties)
+        operation = get_choice(test_table_properties)
+
+    
+        if operation == 1:
+            new_ques = input("Enter new question: ")
+            cursor.execute(f"UPDATE {test_name} SET question = '{new_ques}' WHERE q_no = {question_number}")
+        
+            print("The mentioned change has been made.")
+            break
 
 
-    if operation == 1:
-        new_ques = input("Enter new question: ")
-        cursor.execute(f"UPDATE {test_name} SET question = '{new_ques}' WHERE q_no = {question_number}")
-        db.commit()
-        print("The mentioned change has been made.")
+        elif operation == 2:
+            new_weig = input("Enter new weightage: ") 
+            cursor.execute(f"UPDATE {test_name} SET weightage = {new_weig} WHERE q_no = {question_number}")
+            break
+
+        elif operation == 3:
+            try:
+                cursor.execute(f"SELECT type FROM {test_name} WHERE q_no = {question_number} AND type = 'subj';")
+                new_word_limit = input("Enter new word limit: ")
+                cursor.execute(f"UPDATE {test_name} SET word_limit = '{new_word_limit}' WHERE q_no = {question_number}")
+                break
+            except:
+                print("Cannot modify word limit of an obj type question.")
+                continue
+        
+        elif operation == 4:
+            try:
+                cursor.execute(f"SELECT type FROM {test_name} WHERE q_no = {question_number} AND type = 'obj';")
+                #displaying options
+                for choice in range(0,4):
+                    print(test_table_properties[4][choice])
+
+                while True:
+
+                    #displaying options
+                    for choice in range(0,4):
+                        print(test_table_properties[4][choice])
+
+                    change_choice = int(input("Choose an option to edit: "))
+                    change = input("Enter new option: ")
+                    test_table_properties[4][change_choice] = change
+
+                    cursor.execute(f"UPDATE {test_name} SET options = {test_table_properties[4]} WHERE q_no={question_number};")
+                    loop_gov = input("Changes made. Do you want to make further changes?(y/n)")
+                    if loop_gov.lower() == "n":
+                        break
+
+            except:
+                print("Cannot modify word limit of an obj type question.")
+
+        
+        elif operation == 5:
+            #displaying option containing dict
+            print(test_table_properties[4])
+            answer_input = int(input("Which of the following should be considered as the answer for the given question?"))
+            if answer_input in {1,2,3,4}:
+                #The options will be contained in a list. The answer is being stored as a string.
+                cursor.execute(f"UPDATE {test_name} SET answer = {test_table_properties[4][answer_input - 1]} WHERE q_no = {question_number};")
+
+    
 
 
-    elif operation == 2:
-        new_weig = input("Enter new weightage: ")
-        cursor.execute(f"UPDATE {test_name} SET weightage = {new_weig} WHERE q_no = {question_number}")
-        db.commit()
+    db.commit()
 
 
 

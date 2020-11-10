@@ -20,12 +20,11 @@ view_options = {
 
 test_table_properties = {
         
-        1:"question",
-        2: "weightage",
-        3: "word_limit",
-        4: "options"[
-            str, str, str, str
-            ],
-
-        5: "answer"
+    1:"question",
+    2: "weightage",
+    3: "word_limit",
+    4: "options"[
+        str, str, str, str
+        ],
+    5: "answer"
         }
