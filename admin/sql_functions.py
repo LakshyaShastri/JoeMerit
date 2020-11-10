@@ -24,11 +24,7 @@ def view_tests():
         print("There are no tests in the database right now")
 
 def view_questions(test_name):
-    try:
-        cursor.execute("USE admin")
-    except OperationalError:
-        cursor.execute("CREATE DATABASE admin")
-        cursor.execute("USE admin")
+    cursor.execute("USE admin")
     
     cursor.execute("SHOW TABLES")
     if (test_name, ) not in cursor.fetchall():
@@ -130,7 +126,6 @@ def add_questions(test_name):
     return output
 
 def remove_question(test_name, question_number):
-    # check if question number exists in test_name
     # test name will always be valid since its already verified by view_questions
     if cursor.execute(f"DELTE FROM {test_name} WHERE q_no={question_number}") == 0:
         print("Invalid question number")
