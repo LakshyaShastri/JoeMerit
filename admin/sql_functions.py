@@ -102,9 +102,6 @@ def add_questions(test_name):
             
             ques_data["weightage"] = weightage
             ques_data["word_limit"] = word_limit
-            
-            # add question, weightage and word limit (if any) to the db of test_name
-            # add NULL if no word limit
 
         else:
             options = {}
@@ -117,8 +114,6 @@ def add_questions(test_name):
             ques_data["options"] = list(options.values())
             ques_data["answer"] = answer
 
-            # add question, answer and options to db of test_name
-        
         # clean this up, add using lists or something idk
         cursor.execute(f'INSERT INTO {test_name} VALUES ({q_type}, {question}, {ques_data.get("weightage", 1)}, {ques_data.get("word_limit", "NULL")}, {" | ".join(ques_data.get("options")) if ques_data.get("options") is not None else "NULL"}, {ques_data.get("answer") if ques_data.get("answer") is not None else "NULL"})')
 
