@@ -24,7 +24,7 @@ if ('master', ) not in cursor.fetchall():
     db.commit()
 
 
-print("Welcome to the admin panel for JoeMerit\nPlease choose an option:\n")
+print("\nWelcome to the admin panel for JoeMerit\nPlease choose an option:\n")
 while True:
     display_options(main_options)
     choice = get_choice(main_options)
@@ -41,7 +41,6 @@ while True:
             continue
         
         cursor.execute(f"CREATE TABLE {test_name} (q_no DECIMAL(2), type VARCHAR(4), question VARCHAR(120), weightage DECIMAL(1), word_limit DECIMAL(3), options VARCHAR(300), answer DECIMAL(1))")
-        db.commit()
 
         data = interpret_output(add_questions(test_name))
 

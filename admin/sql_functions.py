@@ -18,10 +18,11 @@ def view_tests():
     for test in cursor.fetchall():
         tests.append(str(test[0]))
 
-    if tests[1:]:
+    tests.pop(0) # popping the master table
+    if tests:
         print(f"{len(tests)} test(s) were found:\n\n {' | '.join(tests)}")
     else:
-        print("There are no tests in the database right now")
+        print("There are no tests in the database right now\n")
 
 def view_questions(test_name):
     cursor.execute("USE admin")
@@ -150,7 +151,7 @@ def add_questions(test_name):
 
 def remove_question(test_name, question_number):
     # test name will always be valid since its already verified by view_questions
-    if cursor.execute(f"DELTE FROM {test_name} WHERE q_no={question_number}") == 0:
+    if cursor.execute(f"DELETE FROM {test_name} WHERE q_no={question_number}") == 0:
         print("Invalid question number")
         return False
     db.commit()
