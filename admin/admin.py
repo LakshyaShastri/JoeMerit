@@ -37,7 +37,7 @@ while True:
             print(f"A test named {test_name} already exists")
             continue
         
-        cursor.execute(f"CREATE TABLE {test_name} (type VARCHAR(4), question VARCHAR(120), weightage DECIMAL(1), word_limit DECIMAL(3), options VARCHAR(300), answer DECIMAL(1);")
+        cursor.execute(f"CREATE TABLE {test_name} (q_no DECIMAL(2), type VARCHAR(4), question VARCHAR(120), weightage DECIMAL(1), word_limit DECIMAL(3), options VARCHAR(300), answer DECIMAL(1);")
         db.commit()
 
         data = interpret_output(add_questions(test_name))
