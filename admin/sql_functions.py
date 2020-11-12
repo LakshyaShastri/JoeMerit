@@ -4,6 +4,7 @@ import MySQLdb
 from MySQLdb._exceptions import OperationalError
 
 from helpers import *
+from options import test_table_properties
 
 db = MySQLdb.connect(host = "localhost", user = "root", passwd = os.environ['sqlpwd'])
 cursor = db.cursor()
@@ -156,11 +157,85 @@ def remove_question(test_name, question_number):
         return False
     db.commit()
 
-# how do this one
+
+
+
+
+
 def modify_question(test_name, question_number):
-    # will have to take a test property, then check if that property exists
-    # maybe make a dict of properties you can edit
-    pass
+
+    while True:
+
+        display_options(test_table_properties)
+        operation = get_choice(test_table_properties)
+
+    
+        if operation == 1:
+            new_ques = input("Enter new question: ")
+            cursor.execute(f"UPDATE {test_name} SET question = '{new_ques}' WHERE q_no = {question_number}")
+        
+            print("The mentioned change has been made.")
+            break
+
+
+        elif operation == 2:
+            new_weig = input("Enter new weightage: ") 
+            cursor.execute(f"UPDATE {test_name} SET weightage = {new_weig} WHERE q_no = {question_number}")
+            break
+
+        elif operation == 3:
+            try:
+                cursor.execute(f"SELECT type FROM {test_name} WHERE q_no = {question_number} AND type = 'subj';")
+                new_word_limit = input("Enter new word limit: ")
+                cursor.execute(f"UPDATE {test_name} SET word_limit = '{new_word_limit}' WHERE q_no = {question_number}")
+                break
+            except:
+                print("Cannot modify word limit of an obj type question.")
+                continue
+        
+        elif operation == 4:
+            if cursor.execute(f"SELECT type FROM {test_name} WHERE q_no = {question_number} AND type = 'obj';") == 1:
+                #displaying options
+                cursor.execute(f"SELECT options FROM {test_name} WHERE q_no = {question_number};")
+                
+                new_ans_list = []
+                for num in {0,1,2,3}:
+                    for option in cursor.fetchone()[0][num]:
+                        print((num+1)," ",option)
+                        new_ans_list.append(option)
+
+                while True:
+
+                    change_choice = int(input("Choose an option to edit: "))
+                    change = input("Enter new option: ")
+                    new_ans_list[change_choice-1] = change
+
+                    cursor.execute(f"UPDATE {test_name} SET options = {new_ans_list} WHERE q_no={question_number};")
+                    loop_gov = input("Changes made. Do you want to make further changes?(y/n)")
+                    if loop_gov.lower() == "n":
+                        break
+
+            else:
+                print("Cannot modify word limit of an obj type question.")
+
+        
+        elif operation == 5:
+            #displaying option containing dict
+            print(test_table_properties[4])
+            answer_input = int(input("Which of the following should be considered as the answer for the given question?"))
+            if answer_input in {1,2,3,4}:
+                #The options will be contained in a list. The answer is being stored as a string.
+                cursor.execute(f"UPDATE {test_name} SET answer = {test_table_properties[4][answer_input - 1]} WHERE q_no = {question_number};")
+
+    
+
+
+    db.commit()
+
+
+
+
+
 
 def delete_test(test_name):
     del_confirm = input(f"Are you sure you want to delete test {test_name} permanently? (y/n): ")
