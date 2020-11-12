@@ -194,28 +194,28 @@ def modify_question(test_name, question_number):
                 continue
         
         elif operation == 4:
-            try:
-                cursor.execute(f"SELECT type FROM {test_name} WHERE q_no = {question_number} AND type = 'obj';")
+            if cursor.execute(f"SELECT type FROM {test_name} WHERE q_no = {question_number} AND type = 'obj';") == 1:
                 #displaying options
-                for choice in range(0,4):
-                    print(test_table_properties[4][choice])
+                cursor.execute(f"SELECT options FROM {test_name} WHERE q_no = {question_number};")
+                
+                new_ans_list = []
+                for num in {0,1,2,3}:
+                    for option in cursor.fetchone()[0][num]:
+                        print((num+1)," ",option)
+                        new_ans_list.append(option)
 
                 while True:
 
-                    #displaying options
-                    for choice in range(0,4):
-                        print(test_table_properties[4][choice])
-
                     change_choice = int(input("Choose an option to edit: "))
                     change = input("Enter new option: ")
-                    test_table_properties[4][change_choice] = change
+                    new_ans_list[change_choice-1] = change
 
-                    cursor.execute(f"UPDATE {test_name} SET options = {test_table_properties[4]} WHERE q_no={question_number};")
+                    cursor.execute(f"UPDATE {test_name} SET options = {new_ans_list} WHERE q_no={question_number};")
                     loop_gov = input("Changes made. Do you want to make further changes?(y/n)")
                     if loop_gov.lower() == "n":
                         break
 
-            except:
+            else:
                 print("Cannot modify word limit of an obj type question.")
 
         
