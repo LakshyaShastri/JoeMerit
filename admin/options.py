@@ -19,11 +19,9 @@ view_options = {
 }
 
 test_table_properties = {
-
     1:"question",
     2: "weightage",
     3: "word_limit",
-    4: "option",
+    4: "options",
     5: "answer"
-
-    }
+}
