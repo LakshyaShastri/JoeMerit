@@ -13,10 +13,8 @@ cursor = db.cursor()
 
 
 
-#STUDENT_CREDS (for now)
-#This is the info given by the student during login and not sign up
-#ASSUMING THAT THE TABLE FOR A SPECIFIC STUDENT HAS ALREADY BEEN CREATED
-#table name = "student_id--student_pw"
+
+#table name template = "student_id--student_pw"
 
 
 
@@ -30,13 +28,14 @@ if ('students', ) not in cursor.fetchall():
 
 
 while True:
+
     qwe("USE students")
+    #login/sign-up?
+    display_options(first_prompt)
+    first_choice = get_choice(first_prompt)
+
     while True:
 
-
-        #login/sign-up?
-        display_options(first_prompt)
-        first_choice = get_choice(first_prompt)
 
         #sign-up
         if first_choice == 1:
@@ -61,7 +60,7 @@ while True:
                 print("The entered passwords do not match. Please try again.")
                 break
             break
-
+        
 
         #login
         elif first_choice == 2:
