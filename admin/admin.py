@@ -3,13 +3,12 @@ from datetime import datetime
 
 import MySQLdb
 
-from options import *
-from helpers import *
-from sql_functions import *
+from options_admin import *
+from helpers_admin import *
+from sql_functions_admin import *
 
 db = MySQLdb.connect(host = "localhost", user = "root", passwd = os.environ['sqlpwd'])
 cursor = db.cursor()
-
 
 cursor.execute("SHOW DATABASES")
 if ('admin', ) not in cursor.fetchall():
