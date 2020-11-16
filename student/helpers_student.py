@@ -23,5 +23,5 @@ def display_options(option_dict):
 
 #table name = "student_id--student_pw"
 def get_table_name(student_id,student_pw):
-    name = (f'{student_id}--{student_pw}')
+    name = (f'{student_id} | {student_pw}')
     return name
