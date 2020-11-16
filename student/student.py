@@ -60,15 +60,8 @@ while True:
 
 #WIP
 while True:
-
     while True:
 
         #displaying available tests and getting a test choice for them to attempt
         display_options(get_test_name_dict())
         get_choice(get_test_name_dict())
-
-
-        
-
-        
-        
