@@ -4,7 +4,7 @@ import MySQLdb
 
 from student.helpers_student import *
 from student.options_student import *
-from student.sql_functions_student import qwe
+from student.sql_functions_student import *
 
 
 
@@ -81,16 +81,25 @@ while True:
                 else:
                     print("The entered credentials may be wrong. Please try again.")
                     break
-            break
+        break
     break
 
 
-# 
 
 
 
+#WIP
 while True:
 
     while True:
 
-        test_opt : 
+        #displaying available tests and getting a test choice for them to attempt
+
+        display_options(get_test_name_dict())
+
+        get_choice(get_test_name_dict())
+
+        
+
+        
+        
