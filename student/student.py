@@ -8,7 +8,7 @@ from sql_functions_student import *
 db = MySQLdb.connect(host = "localhost", user = "root", passwd = os.environ['sqlpwd'])
 cursor = db.cursor()
 
-#table name template = "student_id--student_pw"
+#table name template = "student_id | student_pw"
 
 cursor.execute("SHOW DATABASES")
 if ('students', ) not in cursor.fetchall():
@@ -48,7 +48,7 @@ while True:
 
         cursor.execute("SHOW TABLES")
         for table_name in cursor.fetchall():
-            if get_table_name(login_id,login_pw) == table_name:
+            if get_table_name(login_id, login_pw) == table_name:
                 print("Logged in successfully")
                 logged_in = True
         else:
@@ -58,10 +58,16 @@ while True:
     if logged_in:
         break
 
-#WIP
+# WIP
 while True:
     while True:
 
-        #displaying available tests and getting a test choice for them to attempt
-        display_options(get_test_name_dict())
-        get_choice(get_test_name_dict())
+        # displaying available tests and getting a test choice for them to attempt
+        test_dict = get_test_name_dict()
+
+        display_options(test_dict)
+        choice = get_choice(test_dict)
+
+        cursor.execute("USE admin")
+        cursor.execute(f"SELECT * from {test_dict[choice]}")
+        tests_data = cursor.fetchall()

@@ -16,6 +16,4 @@ def get_test_name_dict():
         final_str = test_name[1:(len(test_name)-2)]
         temp_list.append(final_str)
 
-    cursor.execute("USE students")
-
     return dict(list(enumerate(temp_list, start=1)))
