@@ -70,4 +70,57 @@ while True:
 
         cursor.execute("USE admin")
         cursor.execute(f"SELECT * from {test_dict[choice]}")
-        tests_data = cursor.fetchall()
+        questions = cursor.fetchall()
+
+        obj = {"num": 0, "correct": 0}
+
+        for question in questions: # may or may not use while True later to let the student move back and forth b/w questions
+
+            display = f"""
+            {question[0]}) {question[2]} [{question[3]}]
+            """
+
+            if question[1] == "obj":
+                obj["num"] += 1
+                display += "\n\n"
+
+                for count, option in enumerate(question[5].split(" | "), start = 1):
+                    display += f"{count}. {option}\n"
+
+            else:
+                if question[4] is not None:
+                    display += f"Word limit: {question[4]} words\n"
+            
+            print(display)
+
+            while True:
+                answer = input("\nYour answer: ")
+
+                if question[1] == "obj":
+
+                    if not answer.isdigit():
+                        print("Please enter the option number to answer an objective type question")
+                        continue
+                    
+                    if int(answer) not in range(1, 5):
+                        print("Invalid option")
+                        continue
+                
+                else:
+                    if question[4] is not None:
+                        if len(answer.split()) > question[4]:
+                            print(f"Your answer is {len(answer)} words long, please keep it under the word limit of {question[4]} words")
+                            continue
+                break
+
+            if question[1] == "obj":
+                if int(answer) == int(question[6]):
+                    obj["correct"] += 1
+            
+            # add answer to answers db or table or whatever one by one
+        
+        display = "The test is now over"
+        if obj["num"]:
+            display += f". Your objective score was {obj['correct']}/{obj['num']}"
+        
+        print(display)
