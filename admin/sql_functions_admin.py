@@ -3,8 +3,8 @@ import os
 import MySQLdb
 from MySQLdb._exceptions import OperationalError
 
-from helpers import *
-from options import test_table_properties
+from helpers_admin import *
+from options_admin import test_table_properties
 
 db = MySQLdb.connect(host = "localhost", user = "root", passwd = os.environ['sqlpwd'])
 cursor = db.cursor()
@@ -137,7 +137,7 @@ def add_questions(test_name):
         cursor.execute(f"SELECT MAX(q_no) from {test_name}")
         latest_q_no = cursor.fetchall()[0][0]
 
-        # clean this up, add using lists or something idk
+        # clean this up, aesthetics, add using lists or something idk
         cursor.execute(f'INSERT INTO {test_name} VALUES ({latest_q_no + 1 if latest_q_no is not None else 1}, {q_type}, {question}, {ques_data.get("weightage", 1)}, {ques_data.get("word_limit", "NULL")}, {" | ".join(ques_data.get("options")) if ques_data.get("options") is not None else "NULL"}, {ques_data.get("answer") if ques_data.get("answer") is not None else "NULL"})')
         db.commit()
 
