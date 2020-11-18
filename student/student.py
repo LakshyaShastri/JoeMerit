@@ -1,5 +1,6 @@
 import os
 import MySQLdb
+from textwrap import dedent
 
 from helpers_student import *
 from options_student import *
@@ -91,7 +92,7 @@ while True:
                 if question[4] is not None:
                     display += f"Word limit: {question[4]} words\n"
             
-            print(display)
+            print(dedent(display))
 
             while True:
                 answer = input("\nYour answer: ")
