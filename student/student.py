@@ -157,7 +157,7 @@ while True:
         print(display)
 
         cursor.execute("USE student")
-        cursor.execute(f"INSERT INTO {get_table_name(login_id,login_pw)} VALUES ({test_dict[choice]},{something},str({subj}),str({obj_ans}),str({obj}))")
+        cursor.execute(f"INSERT INTO {get_table_name(login_id,login_pw)} VALUES ({test_dict[choice]},{uhhhhh},{str(subj)},{str(obj_ans)},{str(obj)})")
         
     
 
