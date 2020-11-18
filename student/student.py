@@ -1,4 +1,5 @@
 import os
+import ast
 import MySQLdb
 from textwrap import dedent
 
@@ -74,6 +75,7 @@ while True:
         questions = cursor.fetchall()
 
         obj = {"num": 0, "correct": 0}
+        subj = {}
 
         for question in questions: # may or may not use while True later to let the student move back and forth b/w questions
 
@@ -108,10 +110,17 @@ while True:
                         continue
                 
                 else:
+                    if " | " in answer:
+                        print('Your answer cannot contain " | " in it.')
+                        continue
+
                     if question[4] is not None:
                         if len(answer.split()) > question[4]:
                             print(f"Your answer is {len(answer)} words long, please keep it under the word limit of {question[4]} words")
                             continue
+                    
+                    subj[question[0]] = answer
+
                 break
 
             if question[1] == "obj":
@@ -119,6 +128,7 @@ while True:
                     obj["correct"] += 1
             
             # add answer to answers db or table or whatever one by one
+            # add `str(subj)` to the database
         
         display = "The test is now over"
         if obj["num"]:
