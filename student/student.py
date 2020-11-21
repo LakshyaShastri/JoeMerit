@@ -40,7 +40,7 @@ while True:
         new_pw = confirm_password()
 
         # still have to add table columns. Might add datetime to store when their acc/ID was created.
-        cursor.execute(f"CREATE TABLE {get_table_name(new_id, new_pw)} (test_name VARCHAR(20), something VARCHAR(20), subj_ans VARCHAR(1000), obj_ans DECIMAL(1), obj_score DECIMAL(3)")
+        cursor.execute(f"CREATE TABLE {get_table_name(new_id, new_pw)} (test_name VARCHAR(20), subj_ans VARCHAR(1000), obj_ans DECIMAL(1), obj_score DECIMAL(3), subj_score DECIMAL(3)")
         print("New ID created")
         logged_in = True
 
