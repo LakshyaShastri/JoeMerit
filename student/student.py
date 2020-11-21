@@ -40,7 +40,7 @@ while True:
         new_pw = confirm_password()
 
         # still have to add table columns. Might add datetime to store when their acc/ID was created.
-        cursor.execute(f"CREATE TABLE {get_table_name(new_id, new_pw)}")
+        cursor.execute(f"CREATE TABLE {get_table_name(new_id, new_pw)} (test_name VARCHAR(20), subj_ans VARCHAR(1000), obj_ans DECIMAL(1), obj_score DECIMAL(3), subj_score DECIMAL(3)")
         print("New ID created")
         logged_in = True
 
@@ -60,6 +60,11 @@ while True:
     if logged_in:
         break
 
+
+
+
+
+
 # WIP
 while True:
     while True:
@@ -77,8 +82,14 @@ while True:
         obj = {"num": 0, "correct": 0}
         subj = {}
 
-        for question in questions: # may or may not use while True later to let the student move back and forth b/w questions
 
+        #q_no: int_answer_chosen
+        obj_ans = {}
+
+
+
+        for question in questions: # may or may not use while True later to let the student move back and forth b/w questions
+            #q_no,     question,    weightage
             display = f"""
             {question[0]}) {question[2]} [{question[3]}]
             """
@@ -124,10 +135,19 @@ while True:
                 break
 
             if question[1] == "obj":
+                obj_ans[question[0]] = answer
+
                 if int(answer) == int(question[6]):
                     obj["correct"] += 1
             
+            
+
             # add answer to answers db or table or whatever one by one
+
+
+            
+
+
             # add `str(subj)` to the database
         
         display = "The test is now over"
@@ -135,3 +155,14 @@ while True:
             display += f". Your objective score was {obj['correct']}/{obj['num']}"
         
         print(display)
+
+        cursor.execute("USE student")
+        cursor.execute(f"INSERT INTO {get_table_name(login_id,login_pw)} VALUES ({test_dict[choice]},{uhhhhh},{str(subj)},{str(obj_ans)},{str(obj)})")
+        
+    
+
+
+
+#student table
+# tst_name     ______________    subj_answers    obj_answers    obj_score
+# INSERT INTO <tbale_nmae> VALUES (test_name, soemthing, subj_answers, obj_answers, obj_score)
