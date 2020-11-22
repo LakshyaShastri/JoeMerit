@@ -1,7 +1,9 @@
 main_options = {
     1: "Create a test",
     2: "View/edit a test",
-    3: "Delete a test"
+    3: "Delete a test",
+    4: "Grade a test",
+    5: "View results"
 }
 
 create_options = {

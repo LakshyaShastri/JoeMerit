@@ -85,3 +85,69 @@ while True:
             
         else:
             delete_test(test_name)
+
+    elif choice == 4:
+        
+        test_name = input("Enter the test name for which you want to grade the students: ")
+
+        
+
+        for student in cursor.fetchall():
+
+            cursor.execute("USE student")
+            cursor.execute("SHOW TABLES")
+            student_name = student.split(" | ")[0]
+
+
+
+            print(f"Grading test for {student_name}.")
+            cursor.execute(F"SELECT * FROM {student} WHERE test_name = {str(test_name)}")
+            horizontal = cursor.fetchone()
+            all_answers = horizontal[0][0][1]
+
+            
+            #question extraction
+
+            cursor.execute("USE admin")
+
+            cursor.execute(f"SELECT question FROM {test_name} WHERE type = 'subj'")
+            all_questions = cursor.fetchall()
+            cursor.execute(f"SELECT weightage FROM {test_name} WHERE type = 'subj'")
+            all_weightages = cursor.fetchall()
+
+            #single question-answer extraction and display
+            for i in range(0,(len(all_questions)[0]+1)):
+
+                print(f"Question:\n{all_questions[0][i]}")
+
+                print(f"Given answer:\n{all_answers[0][i]}")
+
+                print(f"weightage: {all_weightages[0][i]}")
+
+                while True:
+
+                    score = input("Enter score: ")
+
+                    if score.isalpha():
+                        print("The score should be an integer. Try again.")
+                        continue
+                    
+                    if score > all_weightages[0][i]:
+                        print("The score cannot be more than the weightage. Try again.")
+                        continue
+
+                    break
+
+
+                #finna update dem makrs in the db
+                cursor.execute("USE student")
+
+                
+
+                
+
+            
+
+
+
+
