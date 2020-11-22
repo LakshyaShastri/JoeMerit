@@ -27,20 +27,20 @@ while True:
     if first_choice == 1:
 
         while True:
-            new_id = input("Enter a test username: ")
+            login_id = input("Enter a username: ")
 
             cursor.execute("SHOW TABLES")
             for table_name in cursor.fetchall():
-                if table_name.split(" | ")[0] == new_id:
+                if table_name.split(" | ")[0] == login_id:
                     print("This username has already been taken. Please choose a different username\n")
                     break
             else:
                 break
                 
-        new_pw = confirm_password()
+        login_pw = confirm_password()
 
         # still have to add table columns. Might add datetime to store when their acc/ID was created.
-        cursor.execute(f"CREATE TABLE {get_table_name(new_id, new_pw)} (test_name VARCHAR(20), subj_ans VARCHAR(1000), obj_ans DECIMAL(1), obj_score DECIMAL(3), subj_score DECIMAL(3)")
+        cursor.execute(f"CREATE TABLE {get_table_name(login_id, login_pw)} (test_name VARCHAR(20), subj_ans VARCHAR(1000), obj_ans DECIMAL(1), obj_score DECIMAL(3), subj_score DECIMAL(3)")
         print("New ID created")
         logged_in = True
 
@@ -61,11 +61,6 @@ while True:
         break
 
 
-
-
-
-
-# WIP
 while True:
     while True:
 
@@ -82,14 +77,21 @@ while True:
         obj = {"num": 0, "correct": 0}
         subj = {}
 
-
-        #q_no: int_answer_chosen
+        #q_no: answer_chosen
         obj_ans = {}
 
-
-
         for question in questions: # may or may not use while True later to let the student move back and forth b/w questions
-            #q_no,     question,    weightage
+            """
+            question
+            0 = question number
+            1 = type
+            2 = question
+            3 = weightage
+            4 = word limit
+            5 = options
+            6 = answer
+            """
+            
             display = f"""
             {question[0]}) {question[2]} [{question[3]}]
             """
@@ -139,16 +141,6 @@ while True:
 
                 if int(answer) == int(question[6]):
                     obj["correct"] += 1
-            
-            
-
-            # add answer to answers db or table or whatever one by one
-
-
-            
-
-
-            # add `str(subj)` to the database
         
         display = "The test is now over"
         if obj["num"]:
@@ -157,12 +149,4 @@ while True:
         print(display)
 
         cursor.execute("USE student")
-        cursor.execute(f"INSERT INTO {get_table_name(login_id,login_pw)} VALUES ({test_dict[choice]},{uhhhhh},{str(subj)},{str(obj_ans)},{str(obj)})")
-        
-    
-
-
-
-#student table
-# tst_name     ______________    subj_answers    obj_answers    obj_score
-# INSERT INTO <tbale_nmae> VALUES (test_name, soemthing, subj_answers, obj_answers, obj_score)
+        cursor.execute(f'INSERT INTO {get_table_name(login_id, login_pw)} VALUES ({test_dict[choice]}, "NULL",{str(subj)},{str(obj_ans)},{str(obj)})')
