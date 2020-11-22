@@ -88,14 +88,13 @@ while True:
 
     elif choice == 4:
         
-        test_name = input("Enter the test name for which you want to grade the students: ")
+        test_name = input("Enter the exact test name for which you want to grade the students: ")
+        cursor.execute("USE student")
+        cursor.execute("SHOW TABLES")
 
-        
 
         for student in cursor.fetchall()[0]:
-
-            cursor.execute("USE student")
-            cursor.execute("SHOW TABLES")
+            
             student_name = student.split(" | ")
 
 
@@ -132,7 +131,7 @@ while True:
                         print("The score should be an integer. Try again.")
                         continue
                     
-                    if score > all_weightages[i]:
+                    if int(score) > int(all_weightages[i]):
                         print("The score cannot be more than the weightage. Try again.")
                         continue
 
@@ -144,6 +143,10 @@ while True:
                 #getting the 
                 cursor.execute(f"UPDATE {student} SET sub_score = {score} WHERE test_name = {test_name}")
                 
+
+    elif choice == 5:
+
+        test_name = input("Enter test name for which results are to be viewed: ")
 
                 
 
