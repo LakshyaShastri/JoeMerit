@@ -138,9 +138,7 @@ while True:
                     break
 
 
-                #finna update dem makrs in the db
                 cursor.execute("USE student")
-                #getting the 
                 cursor.execute(f"UPDATE {student} SET sub_score = {score} WHERE test_name = {test_name}")
                 
 
