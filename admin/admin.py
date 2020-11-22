@@ -92,18 +92,18 @@ while True:
 
         
 
-        for student in cursor.fetchall():
+        for student in cursor.fetchall()[0]:
 
             cursor.execute("USE student")
             cursor.execute("SHOW TABLES")
-            student_name = student.split(" | ")[0]
+            student_name = student.split(" | ")
 
 
 
             print(f"Grading test for {student_name}.")
             cursor.execute(F"SELECT * FROM {student} WHERE test_name = {str(test_name)}")
             horizontal = cursor.fetchone()
-            all_answers = horizontal[0][0][1]
+            all_answers = horizontal[0][1]
 
             
             #question extraction
@@ -118,11 +118,11 @@ while True:
             #single question-answer extraction and display
             for i in range(0,(len(all_questions)[0]+1)):
 
-                print(f"Question:\n{all_questions[0][i]}")
+                print(f"Question:\n{all_questions[i]}")
 
-                print(f"Given answer:\n{all_answers[0][i]}")
+                print(f"Given answer:\n{all_answers[i]}")
 
-                print(f"weightage: {all_weightages[0][i]}")
+                print(f"weightage: {all_weightages[i]}")
 
                 while True:
 
@@ -132,7 +132,7 @@ while True:
                         print("The score should be an integer. Try again.")
                         continue
                     
-                    if score > all_weightages[0][i]:
+                    if score > all_weightages[i]:
                         print("The score cannot be more than the weightage. Try again.")
                         continue
 
@@ -141,7 +141,8 @@ while True:
 
                 #finna update dem makrs in the db
                 cursor.execute("USE student")
-
+                #getting the 
+                cursor.execute(f"UPDATE {student} SET sub_score = {score} WHERE test_name = {test_name}")
                 
 
                 
