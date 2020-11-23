@@ -89,7 +89,7 @@ while True:
     elif choice == 4:
         
         test_name = input("Enter the exact test name for which you want to grade the students: ")
-        cursor.execute("USE student")
+        cursor.execute("USE students")
         cursor.execute("SHOW TABLES")
 
 
@@ -114,6 +114,8 @@ while True:
             cursor.execute(f"SELECT weightage FROM {test_name} WHERE type = 'subj'")
             all_weightages = cursor.fetchall()
 
+            score_dict = {}
+
             #single question-answer extraction and display
             for i in range(0,(len(all_questions)[0]+1)):
 
@@ -135,20 +137,67 @@ while True:
                         print("The score cannot be more than the weightage. Try again.")
                         continue
 
+                    score_dict[i] = score
+
                     break
 
 
-                cursor.execute("USE student")
-                cursor.execute(f"UPDATE {student} SET sub_score = {score} WHERE test_name = {test_name}")
+            cursor.execute("USE students")
+            #make a dict to store the respective scores
+
+            cursor.execute(f"UPDATE {student} SET sub_score = {str(score_dict)} WHERE test_name = {test_name}")
                 
+
+
+
+
 
     elif choice == 5:
 
-        test_name = input("Enter test name for which results are to be viewed: ")
 
-                
+        while True:
 
+            test_name = input("Enter test name for which results are to be viewed: ")
             
+            #checking if the test exists
+            cursor.execute("USE admin")
+            cursor.execute("SHOW TABLES")
+            if test_name not in cursor.fetchall()[0]:
+                print("The entered test name does not exist. Please enter a valid test.")
+                break
+
+                    
+
+            cursor.execute("USE students")       
+            cursor.execute("SHOW TABLES")
+
+            all_tables = cursor.fetchall()            
+
+            for user in all_tables[0]:
+            #getting total score for one student and displaying it
+                #initializing da ting
+                cursor.execute(f"SELECT subj_score FROM {user} WHERE test_name = {test_name}")
+                scores = dict(cursor.fetchall()[0])
+
+                total_score = get_total_score(scores)
+                
+                student_username = user.split(" | ")[0]
+
+                #displaying da ting
+                print(f"Subjective score for {student_username} : {total_score}\n")
+                
+            cont = input("Do you want to conitnue for other tests? (y/n)")
+
+            if cont.lower() == "y":
+                continue
+
+            elif cont.lower() == "n":
+                break
+
+
+
+
+
 
 
 
