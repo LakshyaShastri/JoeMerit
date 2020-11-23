@@ -173,7 +173,7 @@ while True:
 
             all_tables = cursor.fetchall()            
 
-            for user in all_tables[0]:
+            for user in all_tables:
             #getting total score for one student and displaying it
                 #initializing da ting
                 cursor.execute(f"SELECT subj_score FROM {user} WHERE test_name = {test_name}")
@@ -193,7 +193,6 @@ while True:
 
             elif cont.lower() == "n":
                 break
-
 
 
 
