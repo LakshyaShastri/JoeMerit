@@ -87,66 +87,79 @@ while True:
             delete_test(test_name)
 
     elif choice == 4:
-        
-        test_name = input("Enter the exact test name for which you want to grade the students: ")
-        cursor.execute("USE students")
-        cursor.execute("SHOW TABLES")
+        while True:
+
+            while True:
+
+                test_name = input("Enter the exact test name for which you want to grade the class: ")
+                cursor.execute("USE admin")
+                cursor.execute("SHOW TABLES")
 
 
-        for student in cursor.fetchall()[0]:
-            
-            student_name = student.split(" | ")
-
-
-
-            print(f"Grading test for {student_name}.")
-            cursor.execute(F"SELECT * FROM {student} WHERE test_name = {str(test_name)}")
-            horizontal = cursor.fetchone()
-            all_answers = horizontal[0][1]
-
-            
-            #question extraction
-
-            cursor.execute("USE admin")
-
-            cursor.execute(f"SELECT question FROM {test_name} WHERE type = 'subj'")
-            all_questions = cursor.fetchall()
-            cursor.execute(f"SELECT weightage FROM {test_name} WHERE type = 'subj'")
-            all_weightages = cursor.fetchall()
-
-            score_dict = {}
-
-            #single question-answer extraction and display
-            for i in range(0,(len(all_questions)[0]+1)):
-
-                print(f"Question:\n{all_questions[i]}")
-
-                print(f"Given answer:\n{all_answers[i]}")
-
-                print(f"weightage: {all_weightages[i]}")
-
-                while True:
-
-                    score = input("Enter score: ")
-
-                    if score.isalpha():
-                        print("The score should be an integer. Try again.")
-                        continue
-                    
-                    if int(score) > int(all_weightages[i]):
-                        print("The score cannot be more than the weightage. Try again.")
-                        continue
-
-                    score_dict[i] = score
-
+                if (test_name ,) in cursor.fetchall():
+                    print("This test does not exist or is invalid. Please enter the correct test name.")
                     break
-
-
-            cursor.execute("USE students")
-            #make a dict to store the respective scores
-
-            cursor.execute(f"UPDATE {student} SET sub_score = {str(score_dict)} WHERE test_name = {test_name}")
                 
+                cursor.execute("USE students")
+                cursor.execute("SHOW TABLES")
+                
+                for student in cursor.fetchall():
+            
+                    student_name = student[0][0].split(" | ")
+
+
+
+                    print(f"Grading test for {student_name}.")
+                    cursor.execute(f"SELECT * FROM {student} WHERE test_name = {str(test_name)}")
+                    horizontal = cursor.fetchone()
+                    all_answers = horizontal[0][1]
+
+            
+                    #question extraction
+
+                    cursor.execute("USE admin")
+
+                    cursor.execute(f"SELECT question FROM {test_name} WHERE type = 'subj'")
+                    all_questions = cursor.fetchall()
+                    cursor.execute(f"SELECT weightage FROM {test_name} WHERE type = 'subj'")
+                    all_weightages = cursor.fetchall()
+
+                    score_dict = {}
+
+                    #single question-answer extraction and display
+                    for i in range(0,(len(all_questions)[0]+1)):
+
+                        print(f"Question:\n{all_questions[i]}")
+
+                        print(f"Given answer:\n{all_answers[i]}")
+
+                        print(f"weightage: {all_weightages[i]}")
+
+                        while True:
+
+                            score = input("Enter score: ")
+
+                            if score.isalpha():
+                                print("The score should be an integer. Try again.")
+                                continue
+                    
+                            if int(score) > int(all_weightages[i]):
+                                print("The score cannot be more than the weightage. Try again.")
+                                continue
+
+                            score_dict[i] = score
+
+                            break
+
+
+                    cursor.execute("USE students")
+                    #make a dict to store the respective scores
+
+                    cursor.execute(f"UPDATE {student} SET sub_score = {str(score_dict)} WHERE test_name = {test_name}")
+                
+                print("You have marked all answers.")
+                break
+            break
 
 
 
@@ -173,15 +186,15 @@ while True:
 
             all_tables = cursor.fetchall()            
 
-            for user in all_tables[0]:
+            for user in all_tables:
             #getting total score for one student and displaying it
                 #initializing da ting
-                cursor.execute(f"SELECT subj_score FROM {user} WHERE test_name = {test_name}")
+                cursor.execute(f"SELECT subj_score FROM {(user ,)[0]} WHERE test_name = {test_name}")
                 scores = dict(cursor.fetchall()[0])
 
                 total_score = get_total_score(scores)
                 
-                student_username = user.split(" | ")[0]
+                student_username = user[0][0].split(" | ")[0]
 
                 #displaying da ting
                 print(f"Subjective score for {student_username} : {total_score}\n")
