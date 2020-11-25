@@ -175,7 +175,7 @@ while True:
             #checking if the test exists
             cursor.execute("USE admin")
             cursor.execute("SHOW TABLES")
-            if test_name not in cursor.fetchall()[0]:
+            if (test_name, ) not in cursor.fetchall():
                 print("The entered test name does not exist. Please enter a valid test.")
                 break
 
@@ -206,8 +206,6 @@ while True:
 
             elif cont.lower() == "n":
                 break
-
-
 
 
 
