@@ -40,7 +40,7 @@ while True:
         login_pw = confirm_password()
 
         # still have to add table columns. Might add datetime to store when their acc/ID was created.
-        cursor.execute(f"CREATE TABLE {get_table_name(login_id, login_pw)} (test_name VARCHAR(20), subj_ans VARCHAR(1000), obj_ans DECIMAL(1), obj_score DECIMAL(3), subj_score DECIMAL(3)")
+        cursor.execute(f"CREATE TABLE {get_table_name(login_id, login_pw)} (test_name VARCHAR(20), subj_ans VARCHAR(1000), obj_ans DECIMAL(1),  subj_score DECIMAL(3), obj_score DECIMAL(3)")
         print("New ID created")
         logged_in = True
 
@@ -149,4 +149,4 @@ while True:
         print(display)
 
         cursor.execute("USE student")
-        cursor.execute(f'INSERT INTO {get_table_name(login_id, login_pw)} VALUES ({test_dict[choice]}, "NULL",{str(subj)},{str(obj_ans)},{str(obj)})')
+        cursor.execute(f'INSERT INTO {get_table_name(login_id, login_pw)} VALUES ({test_dict[choice]}, {str(subj)}, {str(obj_ans)}, "NULL", {str(obj)})')

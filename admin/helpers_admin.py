@@ -25,3 +25,11 @@ def interpret_output(output):
         "obj_ques_num": obj_ques_num,
         "max_marks": max_marks
     }
+
+
+def get_total_score(score_dict):
+    total_score = 0
+    for q_score in score_dict:
+        total_score+=q_score
+
+    return total_score
