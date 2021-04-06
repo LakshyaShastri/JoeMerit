@@ -165,9 +165,8 @@ while True:
         while True:
 
             while True:
-
                 if not logged_in:
-                    print("Please log in again:")
+                    print("Please log in:")
                     login_id = input("Enter your student ID: ")
                     login_pw = input("Enter your password: ")
 
@@ -175,11 +174,13 @@ while True:
                     for table_name in cursor.fetchall():
                         if get_table_name(login_id, login_pw) == table_name:
                             print("Logged in successfully")
-                            logged_in = True  
+                            logged_in = True
+                            break
                     else:
                         print("The entered credentials may be wrong or you might not have an account.")
                         logged_in = False
-
+                else:
+                    break
 
             if logged_in:
                 cursor.execute('USE students')
