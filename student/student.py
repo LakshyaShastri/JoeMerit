@@ -207,10 +207,7 @@ while True:
                     print(f'Your subjective score for this test: {score_data[1]}')
 
                 break
-
-
-
-
-
-
-
+    
+    elif prompt_choice == 3:
+        print("Exiting program")
+        break
